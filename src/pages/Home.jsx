@@ -12,9 +12,9 @@ function Home() {
     useEffect(() => {
         const loadRaces = async () => {
             try{
-                const races = await fetch("localhost:3000/")
-                console.log(races)
-                setRaces(races)
+                const response = await fetch("http://localhost:3000")
+                // console.log()
+                setRaces(await response.json())
             } catch (err){
                 console.log(err)
                 setError("Failed to load race data.")

@@ -1,10 +1,15 @@
-const express = require('express');
+import express from 'express';
+import cors from 'cors';
 const app = express();
 
 // Import the Google Cloud client library
-const {BigQuery} = require('@google-cloud/bigquery');
+import { BigQuery } from '@google-cloud/bigquery';
 
 const port = process.env.PORT ?? 3000;
+
+
+app.use(cors());
+
 
 app.use('/', async (req, res) => {
     // res.send('hello from node')
@@ -15,7 +20,7 @@ app.use('/', async (req, res) => {
 app.listen(process.env.PORT ?? 3000, async () => {
   console.log(`Server listening on port ${port}`);
 
-//   await initialize();
+
 });
 
 
@@ -28,7 +33,7 @@ async function queryF1(year) {
 
   // The SQL query to run
   const sqlQuery =
-  `SELECT ROW_NUMBER() OVER(ORDER BY races.date DESC) AS id, FORMAT_DATE('%b-%d-%Y', races.date) AS Date, races.name AS GrandPrix, circuits.location, circuits.country, drivers.forename, drivers.surname, constructors.name AS Constructor
+  `SELECT ROW_NUMBER() OVER(ORDER BY races.date DESC) AS id, races.year, FORMAT_DATE('%b-%d-%Y', races.date) AS Date, races.name AS GrandPrix, circuits.location, circuits.country, drivers.forename, drivers.surname, constructors.name AS Constructor
     FROM \`f1.drivers\` AS drivers
     JOIN \`f1.results\` AS results
     ON drivers.driverId = results.driverId
@@ -49,6 +54,12 @@ async function queryF1(year) {
 
   // Run the query
   const [rows] = await bigqueryClient.query(sqlQuery);
+
+  // TODO
+  // Cache aside
+  // check Redis cache
+  // if in Redis, return
+  // else, JSON.SET race.year 
 
 
   console.log(rows);
