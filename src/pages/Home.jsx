@@ -12,7 +12,7 @@ function Home() {
     useEffect(() => {
         const loadRaces = async () => {
             try{
-                const response = await fetch("http://localhost:3000")
+                const response = await fetch("http://localhost:3000/2024")
                 // console.log()
                 setRaces(await response.json())
             } catch (err){

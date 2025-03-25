@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import "./css/App.css"
 import Home from "./pages/Home"
 import { Routes, Route } from 'react-router-dom'

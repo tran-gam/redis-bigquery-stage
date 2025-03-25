@@ -11,9 +11,9 @@ const port = process.env.PORT ?? 3000;
 app.use(cors());
 
 
-app.use('/', async (req, res) => {
+app.get('/:year', async (req, res) => {
     // res.send('hello from node')
-    const data = await queryF1(2024);
+    const data = await queryF1(req.params.year);
     res.send(data)
 })
 
