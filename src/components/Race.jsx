@@ -30,8 +30,7 @@ function Race({race}) {
         <div className="race-info">
             <h3>{race.date}</h3>
             <p>{race.grandprix}
-                <br />{race.location}
-                <br />{race.country}
+                <br />{race.location}, {race.country}
             </p>
             <p><b>Winner: {race.forename} {race.surname}</b></p>
         </div>

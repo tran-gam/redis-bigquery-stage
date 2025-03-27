@@ -11,7 +11,7 @@ let client = null;
  *
  * @returns {Promise<ReturnType<typeof createClient>>}
  */
-export default async function getClient(options) {
+export async function getClient(options) {
   options = Object.assign(
     {},
     {

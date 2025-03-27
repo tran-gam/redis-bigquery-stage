@@ -15,6 +15,7 @@ function Driver({driver}) {
         <div className="race-info">
             <h3>{driver.time}</h3>
             <h4>{driver.forename} {driver.surname}</h4>
+                <br />Position: {driver.position}
                 <br />Constructor: {driver.constructor}
                 <br />Laps: {driver.laps}
 

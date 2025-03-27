@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import getClient from "./redis.js";
+import { getClient } from "./redis.js";
 import { BigQuery } from '@google-cloud/bigquery';
 
 
@@ -28,7 +28,9 @@ app.get('/data/:raceId', async (req, res) => {
 
 
 async function queryYear(year) {
+  const redis = await getClient();
   const bigqueryClient = new BigQuery();
+
 
   // The SQL query to run
   const sqlQuery =
@@ -45,29 +47,45 @@ async function queryYear(year) {
     LIMIT 100;`;
 
 
-  // TODO
-  // check Redis cache
-  // if in Redis, return
-  // else,
-  // Run the query
-  const [rows] = await bigqueryClient.query(sqlQuery);
 
-  // SET race.year 
+    try {
+      // Check Redis cache
+      const cachedData = await redis.get(year, (err, data) => {
+          if (err) reject(err);
+          resolve(data);
+        });
+  
+      if (cachedData) {
+        console.log("Cache hit!");
+        return JSON.parse(cachedData);
+      } else {
+        console.log("Cache miss...");
+        // Run the SQL query
+        const [rows] = await bigqueryClient.query(sqlQuery);
+  
+        // Store the results in Redis
+        await redis.set(year, JSON.stringify(rows), (err) => {
+            if (err) reject(err);
+            resolve();
+          });
+  
+        console.log("Retrieved RaceByYear data from BigQuery");
+        return rows;
+      }
+    } catch (error) {
+      console.error("Error querying data:", error);
+      throw error;
+    }
 
-  console.log(rows);
-  return rows;
-
-//   console.log('Query Results:');
-//   rows.forEach(row => {
-//     const driver = row['driverRef'];
-//     const nationality = row['nationality'];
-//     console.log(`driver: ${driver}, ${nationality}`);
-//   });
+    // const [rows] = await bigqueryClient.query(sqlQuery);
+    // console.log(rows);
+    // return rows;
 }
 
 async function queryRace(raceId) {
-  // Create a client
+  const redis = await getClient();
   const bigqueryClient = new BigQuery();
+  
 
   // The SQL query to run
   const sqlQuery =
@@ -88,16 +106,37 @@ async function queryRace(raceId) {
 
 
 
-  // TODO
-  // check Redis cache
-  // if in Redis, return
-  // else,
-  // Run the query
-  const [rows] = await bigqueryClient.query(sqlQuery);
 
-  // SET raceId
+    try {
+      // Check Redis cache
+      const cachedData = await redis.get(raceId, (err, data) => {
+          if (err) reject(err);
+          resolve(data);
+        });
+  
+      if (cachedData) {
+        console.log("Cache hit!");
+        return JSON.parse(cachedData);
+      } else {
+        console.log("Cache miss...");
+        // Run the SQL query
+        const [rows] = await bigqueryClient.query(sqlQuery);
+  
+        // Store the results in Redis
+        await redis.set(raceId, JSON.stringify(rows), (err) => {
+            if (err) reject(err);
+            resolve();
+          });
+  
+        console.log("Retrieved DriverByRaceId data from BigQuery");
+        return rows;
+      }
+    } catch (error) {
+      console.error("Error querying data:", error);
+      throw error;
+    }
 
-
-  console.log(rows);
-  return rows;
+  // const [rows] = await bigqueryClient.query(sqlQuery);
+  // console.log(rows);
+  // return rows;
 }
