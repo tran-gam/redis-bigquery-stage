@@ -1,6 +1,5 @@
 import Race from "../components/Race.jsx"
 import { useState, useEffect } from "react"
-// import {queryF1} from "../../server/api.js"
 import "../css/Home.css"
 
 function Home() {
@@ -12,14 +11,13 @@ function Home() {
     useEffect(() => {
         const loadRaces = async () => {
             try{
-                const response = await fetch("http://localhost:3000/2024")
+                const response = await fetch("http://localhost:3000/search/2024")
                 // console.log()
                 setRaces(await response.json())
-            } catch (err){
+            }catch (err){
                 console.log(err)
                 setError("Failed to load race data.")
-            }
-            finally {
+            }finally {
                 setLoading(false);
             }
         }
@@ -28,19 +26,28 @@ function Home() {
     }, [])
 
 
-    // const races = [
-    //     {id: 1, name: "Australian GP", year: "2024"},
-    //     {id: 2, name: "Bahrain GP", year: "2024"},
-    //     {id: 3, name: "Italy GP", year: "2024"},
-    //     {id: 4, name: "Jordan GP", year: "2024"},
-    //     {id: 5, name: "London GP", year: "2024"}
-    // ];
 
 
-
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault()
-        alert(searchQuery)
+        // alert(searchQuery)
+
+        if (!searchQuery.trim()) return
+        if(loading) return
+
+        setLoading(true)
+        try {
+            const response = await fetch(`http://localhost:3000/search/${searchQuery.trim()}`)
+            // console.log()
+            setRaces(await response.json())
+            setError(null)
+
+        } catch (err) {
+            console.log(err)
+            setError("Failed to search...")
+        } finally {
+            setLoading(false)
+        }
     };
 
 
@@ -57,12 +64,23 @@ function Home() {
             <button className="search-btn" type="submit">Search</button>
         </form>
 
-        <div className="race-grid">
-            {races.map(
-                (race) => <Race race={race} key={race.id} />
-            )}
-        </div>
+
+        {error && <div className="error-message">{error}</div>}
+
+        {loading ? (
+            <div className="loading">Loading ...</div>
+        ) : (
+            <div className="race-grid">
+                {races.map((race) => (
+                    <Race race={race} key={race.id} />
+                ))}
+            </div>
+        )}
+
+
     </div>
+    
+
 }
 
 export default Home

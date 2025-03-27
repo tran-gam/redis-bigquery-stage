@@ -15,8 +15,9 @@
   
   .race-img {
     position: relative;
-    aspect-ratio: 2/3;
+    /* aspect-ratio: 2/3; */
     width: 100%;
+    height: 50%;
   }
   
   .race-img img {
@@ -70,7 +71,7 @@
   }
   
   .bookmark-btn.active {
-    color: #ff4757;
+    color: #dcff1e;
   }
   
   .rating-select {
