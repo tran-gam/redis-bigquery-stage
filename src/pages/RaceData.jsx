@@ -102,7 +102,7 @@ function RaceData() {
 
                         </h3>
                     </div>
-                    <div className="race-grid">
+                    <div className="driver-grid">
                         {raceData.map((driver) => (
                             <Driver driver={driver} key={driver.id} />
                         ))}

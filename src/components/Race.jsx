@@ -1,7 +1,7 @@
 import "../css/Race.css"
 import { useBookmarkContext } from "../context/BookmarkContext"
 import { Link } from "react-router-dom";
-import logo from "../img/F1.jpg"
+
 
 function Race({race}) {
     const {changeRace, isBookmark, addToBookmarks, removeFromBookmarks} = useBookmarkContext()
@@ -15,23 +15,20 @@ function Race({race}) {
     }
 
     function onCardClick(e) {
-        // alert(`selectedRace ${race.raceId}`)
         changeRace(race.raceId)
     }
 
-    return <Link to="/race"><div className="race" onClick={onCardClick}>
-        <div className="race-img">
-            
-            <img src={logo} alt={race.grandprix}/>
+    return <Link to="/racedata"><div className="race" onClick={onCardClick}>
+        <div className="race-img">            
+            <img src={race.googlemap} alt={race.grandprix}/>
             <div className="race-overlay">
                 <button className={`bookmark-btn ${bookmark ? "active" : ""}`} onClick={onBookmark}>★</button>
             </div>
         </div>
         <div className="race-info">
-            <h3>{race.date}</h3>
-            <p>{race.grandprix}
-                <br />{race.location}, {race.country}
-            </p>
+            <h2>{race.grandprix}</h2>
+            <h4>{race.date}</h4>
+            <p>{race.location}, {race.country}</p>
             <p><b>Winner: {race.forename} {race.surname}</b></p>
         </div>
     </div></Link>

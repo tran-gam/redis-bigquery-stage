@@ -4,20 +4,27 @@
     overflow: hidden;
     background-color: #1a1a1a;
     transition: transform 0.2s;
-    height: 100%;
+    height: 90%;
     display: flex;
     flex-direction: column;
   }
-  
+
+ 
   .race:hover {
     transform: translateY(-5px);
   }
   
   .race-img {
     position: relative;
+    /* aspect-ratio: 3/4; */
+    width: 100%;
+    height: 70%;
+  }
+
+  .driver-img {
+    position: relative;
     /* aspect-ratio: 2/3; */
     width: 100%;
-    height: 50%;
   }
   
   .race-img img {

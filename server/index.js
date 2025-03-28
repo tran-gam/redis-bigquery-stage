@@ -35,7 +35,7 @@ async function queryYear(year) {
   // The SQL query to run
   const sqlQuery =
   `SELECT ROW_NUMBER() OVER(ORDER BY races.date DESC) AS id, races.raceId, races.year, FORMAT_DATE('%b-%d-%Y', races.date) AS date,
-    races.name AS grandprix, circuits.location, circuits.country, drivers.forename, drivers.surname
+    races.name AS grandprix, circuits.location, circuits.country, drivers.forename, drivers.surname, circuits.googlemap
     FROM \`f1.drivers\` AS drivers
     JOIN \`f1.results\` AS results
     ON drivers.driverId = results.driverId

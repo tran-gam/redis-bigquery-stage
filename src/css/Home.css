@@ -59,7 +59,15 @@
     gap: 1.5rem;
     padding: 1rem;
     width: 100%;
-    /* height: 150px; */
     box-sizing: border-box;
   }
 
+  .driver-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+    width: 100%;
+    /* height: 100px; */
+    box-sizing: border-box;
+  }

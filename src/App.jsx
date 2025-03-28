@@ -14,7 +14,7 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/race" element={<RaceData />} />
+          <Route path="/racedata" element={<RaceData />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
         </Routes>
       </main>  
